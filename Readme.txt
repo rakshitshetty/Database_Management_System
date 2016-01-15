@@ -1,0 +1,9 @@
+This project aims to implement an SQL query evaluator with support for Select, Project, Join, Bag Union, and Aggregate operations. We received a set of data files, schema information, and were expected to evaluate multiple SELECT queries over those data files.
+
+The given SQL queries were parsed into an expression tree which could be traversed to evaluate the complete expression. This tree was further optimized by applying some standard query optimization techniques such as pushing down select operator, choosing a more efficient join such as Hash join, etc.
+
+Since this project implements a query evaluator and not a full database engine, there are no tables -- at least not in the traditional sense of persistent objects that can be updated and modified. Instead, It has a Table Schema and a CSV File with the instance in it. To keep things simple, there is a CREATE TABLE statement to define a relation's schema. 
+
+The approach this projects takes is to first parse the given query into an Expression tree using JSQLParser. Once the tree is created, the second step is to go ahead and optimize the tree as mentioned earlier.Once the tree has been optimised and finalised, we start obtaining tuples from corresponding relations that are present in the CSV files. We traverse through the tree tuple by tuple and perform all the operations such Project, Select, Join, OrderBy etc and if the tuple in consideration successfully passes all the operators, it is sent to the output and printed in the standard form.
+
+The reason for the tuple-by-tuple approach is that the number of tuples in each relation/ table may be large in number and might not fit into the memory. The only operator that operates on all the tuples as a whole is GroupBy but this does not cause memory issues as the number of tuples that reach GroupBy are comparatively much lesser than the entire relation.
